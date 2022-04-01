@@ -1,0 +1,98 @@
+{
+	"compiler": {
+		"version": "0.8.6+commit.11564f7e"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "uint16",
+						"name": "_longitude",
+						"type": "uint16"
+					},
+					{
+						"internalType": "uint16",
+						"name": "_lattitude",
+						"type": "uint16"
+					},
+					{
+						"internalType": "uint8",
+						"name": "_bounty",
+						"type": "uint8"
+					},
+					{
+						"internalType": "address",
+						"name": "_owner",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [],
+				"name": "acceptJob",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "bountyPerMinute",
+				"outputs": [
+					{
+						"internalType": "uint8",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts\\job.sol": "Job"
+		},
+		"evmVersion": "berlin",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts\\job.sol": {
+			"keccak256": "0x7881cfdb295e6181f92de73d8c1712c73fae7e0f1d4806f5b65238af6b95351e",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://2b79b48d0b86949a8eee49989e83ee115d2d3461e1a762e75a047c9ea0540fa4",
+				"dweb:/ipfs/QmY9hn4unxckHEDTzEQjQc3NRMff6HHpbdjNEFbYbSU55F"
+			]
+		}
+	},
+	"version": 1
+}
