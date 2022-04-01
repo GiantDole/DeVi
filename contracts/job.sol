@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.6;
+pragma solidity 0.8.13;
 
 contract Job {
 
@@ -14,7 +14,9 @@ contract Job {
     //address[] private senders;
     address private sender;
     uint256 timestamp;
-    uint8 public timelimit;
+    uint256 public timelimit;
+    uint256 private timeSpent;
+
 
     constructor(
         uint16 _longitude, 
@@ -25,28 +27,45 @@ contract Job {
         gps = GPS(_longitude, _lattitude);
         bountyPerMinute = _bounty;
         owner = _owner;
-        locked = false;
         timestamp = 0;
         timelimit = _timelimit;
+        timeSpent = 0;
     }
 
     function acceptJob() public{
         //Sender accepting Job
         require(sender == address(0));
-        sender = msg.sender;
+        sender = payable(msg.sender);
     }
 
     function acceptRequest() public {
         //Requester accepting request
         require(msg.sender == owner);
-        timestamp = now;
+        timestamp = block.timestamp;
     }
 
     function denyRequest() public {
         //time elapsed or denied
-        require(msg.sender == owner);
+        require(msg.sender == owner && timestamp == 0);
         delete sender;
-        delete timestamp;
+    }
+
+    function terminateJob() public {
+        require(timeSpent == 0 && (msg.sender == owner || msg.sender == sender));
+        timeSpent = block.timestamp - timelimit;
+
+        //send reward to the sender
+        uint amount = (timeSpent / 60) * bountyPerMinute;
+        payable(sender).send(amount);
+
+        //send remaining money back to requester
+        payable(owner).send(address(this).balance);
+    }
+
+    function collectReward() public {
+        require(msg.sender == sender && timeSpent != 0);
+        uint amount = (timeSpent / 60) * bountyPerMinute;
+        payable(msg.sender).send(amount);
     }
        
 }
