@@ -9,7 +9,7 @@ contract Job {
     }
 
     GPS gps;
-    uint8 public bountyPerMinute;
+    uint256 public bountyPerMinute;
     address private owner;
     //address[] private senders;
     address private contractor;
@@ -18,17 +18,17 @@ contract Job {
     uint256 private timeSpent;
     uint256 public radius;
 
-    uint256 public temp;
+    uint256 public totalBounty;
 
 
     constructor(
         uint16 _longitude, 
         uint16 _latitude, 
-        uint8 _bounty, 
+        uint256 _bountyPerMinute, 
         address _owner, 
         uint8 _timelimit) {
         gps = GPS(_longitude, _latitude);
-        bountyPerMinute = _bounty;
+        bountyPerMinute = _bountyPerMinute;
         owner = _owner;
         timestamp = 0;
         timelimit = _timelimit;
@@ -36,8 +36,10 @@ contract Job {
     }
 
     //https://solidity-by-example.org/sending-ether/
-    receive() external payable{
-        temp = msg.value;
+    // check if value is greater than bounty per minute
+    receive() external payable {
+        require(msg.value > bountyPerMinute, "Bounty per minute greater than value deposited.");
+        totalBounty = msg.value;
     }
 
     // worker submits a proposal to owner
