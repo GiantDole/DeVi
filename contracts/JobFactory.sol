@@ -19,8 +19,11 @@ contract JobFactory {
         feeToSetter = _feeToSetter;
     }
 
-    function createJob(uint16 _longitude, uint16 _latitude, uint256 _bountyPerMinute) public payable {
-        address newJobAddr =  address(new Job(_longitude, _latitude, _bountyPerMinute, msg.sender, feeTo, feeRate));
+    // https://gisjames.wordpress.com/2016/04/27/deciding-how-many-decimal-places-to-include-when-reporting-latitude-and-longitude/
+    function createJob(int256 _longitude, int256 _latitude, uint256 radius, uint256 _bountyPerMinute) public payable {
+        require(_latitude > -9000000 && _latitude < 9000000, "Latitude not in bounded range");
+        require(_longitude > -18000000 && _longitude < 18000000, "Longitude not in bounded range");
+        address newJobAddr =  address(new Job(_longitude, _latitude, radius, _bountyPerMinute, msg.sender, feeTo, feeRate));
         allJobs.push(newJobAddr);
         (bool sent, ) = payable(newJobAddr).call{value: msg.value}("");
         value = msg.value;
