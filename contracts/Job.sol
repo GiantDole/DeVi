@@ -12,7 +12,8 @@ contract Job {
     uint256 public bountyPerMinute;
     address private owner;
     //address[] private senders;
-    address private contractor;
+    //make private again after testing:
+    address public contractor;
     uint256 timestamp;
     uint256 public timeLimit;
     uint256 private timeSpent;
@@ -99,11 +100,4 @@ contract Job {
         delete contractor;
         delete owner;
     }
-
-    // function collectReward() public {
-    //     require(msg.sender == sender && timeSpent != 0);
-    //     uint amount = (timeSpent / 60) * bountyPerMinute;
-    //     payable(msg.sender).send(amount);
-    // }
-       
 }
