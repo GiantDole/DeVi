@@ -11,7 +11,7 @@ contract JobFactory {
     event JobCreated(address job);
 
     function createJob(uint16 _longitude, uint16 _latitude, uint256 _bountyPerMinute) public payable {
-        address newJobAddr =  address(new Job(_longitude, _latitude, _bountyPerMinute, msg.sender, 10));
+        address newJobAddr =  address(new Job(_longitude, _latitude, _bountyPerMinute, msg.sender));
         allJobs.push(newJobAddr);
         (bool sent, ) = payable(newJobAddr).call{value: msg.value}("");
         value = msg.value;
