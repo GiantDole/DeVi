@@ -17,8 +17,8 @@ contract Job {
     uint256 public timelimit;
     uint256 private timeSpent;
     uint256 public radius;
-
     uint256 public totalBounty;
+    address public factory;
 
 
     constructor(
@@ -33,6 +33,7 @@ contract Job {
         timestamp = 0;
         timelimit = _timelimit;
         timeSpent = 0;
+        factory = msg.sender;
     }
 
     //https://solidity-by-example.org/sending-ether/
