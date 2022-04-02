@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.6;
 
-import "./job.sol";
+import "./Job.sol";
 
-contract JobCreator {
+contract JobFactory {
 
     address[] public allJobs;
 
@@ -17,4 +17,3 @@ contract JobCreator {
         emit JobCreated(newJobAddr);
     }
 }
-
