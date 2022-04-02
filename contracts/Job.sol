@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.6;
 
-import "./libraries/Math.sol";
+//import "./libraries/Math.sol";
 
 contract Job {
 
@@ -60,7 +60,8 @@ contract Job {
         require(contractor == address(0));
         require(_lat > -9000000 && _lat < 9000000, "Latitude not in bounded range");
         require(_long > -18000000 && _long < 18000000, "Longitude not in bounded range");
-        uint256 d = Math.sqrt(uint(((_long - gps.longitude) ** 2) + ((_lat - gps.latitude) ** 2)));
+        //uint256 d = Math.sqrt(uint(((_long - gps.longitude) ** 2) + ((_lat - gps.latitude) ** 2)));
+        uint256 d = uint(((_long - gps.longitude) ** 2) + ((_lat - gps.latitude) ** 2));
         // 111138 meters per lat/long
         uint256 d_meters = d * 111139 / 10000;
         require(d_meters <= radius, "Geolocation outside of desired location");

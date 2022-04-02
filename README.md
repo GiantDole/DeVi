@@ -9,5 +9,7 @@ Install the following extensions:
     - Remix
 Install the following software:
     - Ganache
+Install Truffle:
+    npm install -g truffle
 
 Set up according to: https://betterprogramming.pub/how-i-set-up-my-local-solidity-development-environment-with-vscode-remix-and-truffle-suite-addd20ef9c
