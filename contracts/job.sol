@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.13;
+pragma solidity 0.8.6;
 
 contract Job {
 
     struct GPS {
         uint16 longitude;
-        uint16 lattitude;
+        uint16 latitude;
     }
 
     GPS gps;
@@ -16,15 +16,16 @@ contract Job {
     uint256 timestamp;
     uint256 public timelimit;
     uint256 private timeSpent;
+    uint256 public radius;
 
 
     constructor(
         uint16 _longitude, 
-        uint16 _lattitude, 
+        uint16 _latitude, 
         uint8 _bounty, 
         address _owner, 
         uint8 _timelimit) {
-        gps = GPS(_longitude, _lattitude);
+        gps = GPS(_longitude, _latitude);
         bountyPerMinute = _bounty;
         owner = _owner;
         timestamp = 0;
@@ -32,15 +33,24 @@ contract Job {
         timeSpent = 0;
     }
 
+    //https://solidity-by-example.org/sending-ether/
+    receive() external payable{}
+
+
+    // worker submits a proposal to owner
+    // need to check that the worker's blockchain address is valid
+    // need to check that the worker's geolocation is within a certain radius
     function acceptJob() public{
         //Sender accepting Job
         require(sender == address(0));
         sender = payable(msg.sender);
     }
 
-    function acceptRequest() public {
+    // owner accepts sender's proposal
+    // start timer
+    function acceptSender() public {
         //Requester accepting request
-        require(msg.sender == owner);
+        require(msg.sender == owner && sender != address(0));
         timestamp = block.timestamp;
     }
 
@@ -50,22 +60,27 @@ contract Job {
         delete sender;
     }
 
-    function terminateJob() public {
-        require(timeSpent == 0 && (msg.sender == owner || msg.sender == sender));
-        timeSpent = block.timestamp - timelimit;
+    // function terminateJob() public {
+    //     require(timeSpent == 0 && (msg.sender == owner || msg.sender == sender));
+    //     timeSpent = block.timestamp - timelimit;
 
-        //send reward to the sender
-        uint amount = (timeSpent / 60) * bountyPerMinute;
-        payable(sender).send(amount);
+    //     //send reward to the sender
+    //     uint amount = (timeSpent / 60) * bountyPerMinute;
+    //     payable(sender).send(amount);
 
-        //send remaining money back to requester
-        payable(owner).send(address(this).balance);
+    //     //send remaining money back to requester
+    //     payable(owner).send(address(this).balance);
+    // }
+
+    function sendmoney(address payable _to) public payable {
+        bool sent = _to.send(10); 
+        require(sent, "Failed to send eth");
     }
 
-    function collectReward() public {
-        require(msg.sender == sender && timeSpent != 0);
-        uint amount = (timeSpent / 60) * bountyPerMinute;
-        payable(msg.sender).send(amount);
-    }
+    // function collectReward() public {
+    //     require(msg.sender == sender && timeSpent != 0);
+    //     uint amount = (timeSpent / 60) * bountyPerMinute;
+    //     payable(msg.sender).send(amount);
+    // }
        
 }
