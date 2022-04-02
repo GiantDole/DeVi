@@ -14,7 +14,7 @@ contract Job {
     //address[] private senders;
     address private contractor;
     uint256 timestamp;
-    uint256 public timelimit;
+    uint256 public timeLimit;
     uint256 private timeSpent;
     uint256 public radius;
     uint256 public totalBounty;
@@ -25,13 +25,14 @@ contract Job {
         uint16 _longitude, 
         uint16 _latitude, 
         uint256 _bountyPerMinute, 
-        address _owner, 
-        uint8 _timelimit) {
+        address _owner
+        //uint8 _timelimit
+        ) {
         gps = GPS(_longitude, _latitude);
         bountyPerMinute = _bountyPerMinute;
         owner = _owner;
         timestamp = 0;
-        timelimit = _timelimit;
+        //timelimit = _timelimit;
         timeSpent = 0;
         factory = msg.sender;
     }
@@ -41,6 +42,7 @@ contract Job {
     receive() external payable {
         require(msg.value > bountyPerMinute, "Bounty per minute greater than value deposited.");
         totalBounty = msg.value;
+        timeLimit = (totalBounty / bountyPerMinute) * 60;
     }
 
     // worker submits a proposal to owner
@@ -68,7 +70,7 @@ contract Job {
 
     function terminateJob() public {
         require(timeSpent == 0 && (msg.sender == owner || msg.sender == contractor));
-        timeSpent = block.timestamp - timelimit;
+        timeSpent = block.timestamp - timeLimit;
 
         //send reward to the sender
         uint256 amount = (timeSpent / 60) * bountyPerMinute;
@@ -76,8 +78,16 @@ contract Job {
         require(paidContractor);
 
         //send remaining money back to requester
-        (bool refundedOwner, ) = payable(owner).call{value: totalBounty - amount}("");
+        //(bool refundedOwner, ) = payable(owner).call{value: totalBounty - amount}("");
+        (bool refundedOwner, ) = payable(owner).call{value: address(this).balance}("");
         require(refundedOwner);
+    }
+
+    function cancelJob() public {
+        require(msg.sender == owner, "You must be the job owner to cancel this job");
+        selfdestruct(payable(owner));
+        delete contractor;
+        delete owner;
     }
 
     // function collectReward() public {
