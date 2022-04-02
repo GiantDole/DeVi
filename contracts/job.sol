@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.6;
+pragma solidity ^0.8.6;
 
 contract Job {
 
@@ -60,7 +60,7 @@ contract Job {
     }
 
     function terminateJob() public {
-        
+
     }
 
     // function terminateJob() public {
