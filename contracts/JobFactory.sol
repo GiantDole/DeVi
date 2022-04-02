@@ -18,4 +18,5 @@ contract JobFactory {
         require(sent, "Eth not sent to new job");
         emit JobCreated(newJobAddr);
     }
+
 }

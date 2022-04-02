@@ -14,7 +14,7 @@
 					},
 					{
 						"internalType": "uint16",
-						"name": "_lattitude",
+						"name": "_latitude",
 						"type": "uint16"
 					},
 					{
@@ -26,23 +26,15 @@
 						"internalType": "address",
 						"name": "_owner",
 						"type": "address"
+					},
+					{
+						"internalType": "uint8",
+						"name": "_timelimit",
+						"type": "uint8"
 					}
 				],
 				"stateMutability": "nonpayable",
 				"type": "constructor"
-			},
-			{
-				"inputs": [],
-				"name": "acceptJob",
-				"outputs": [
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
 			},
 			{
 				"inputs": [],
@@ -56,6 +48,90 @@
 				],
 				"stateMutability": "view",
 				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "contractorAcceptJob",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "ownerAcceptContractor",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "ownerRejectConctractor",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "radius",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address payable",
+						"name": "_to",
+						"type": "address"
+					}
+				],
+				"name": "sendmoney",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "temp",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "terminateJob",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "timelimit",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "receive"
 			}
 		],
 		"devdoc": {
@@ -71,7 +147,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"contracts\\job.sol": "Job"
+			"contracts\\Job.sol": "Job"
 		},
 		"evmVersion": "berlin",
 		"libraries": {},
@@ -85,12 +161,12 @@
 		"remappings": []
 	},
 	"sources": {
-		"contracts\\job.sol": {
-			"keccak256": "0x7881cfdb295e6181f92de73d8c1712c73fae7e0f1d4806f5b65238af6b95351e",
+		"contracts\\Job.sol": {
+			"keccak256": "0x1e0220b23d7ffd107a9eb46c145e86f6b80671ecb1fa8e1b61c91f66d565497c",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://2b79b48d0b86949a8eee49989e83ee115d2d3461e1a762e75a047c9ea0540fa4",
-				"dweb:/ipfs/QmY9hn4unxckHEDTzEQjQc3NRMff6HHpbdjNEFbYbSU55F"
+				"bzz-raw://bd29916ac484cbb14008ecf865807a7b3dbcaa4178f9967d59cadfd075ec623e",
+				"dweb:/ipfs/QmQqHRtVpjELhXmCFrnw5N8LD2kA88iPBJcLcbLroJTWQV"
 			]
 		}
 	},
