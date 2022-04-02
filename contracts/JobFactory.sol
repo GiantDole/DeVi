@@ -7,6 +7,7 @@ contract JobFactory {
 
     address public feeTo;
     address public feeToSetter;
+    uint256 public feeRate;
 
     address[] public allJobs;
     uint256 public value;
@@ -19,7 +20,7 @@ contract JobFactory {
     }
 
     function createJob(uint16 _longitude, uint16 _latitude, uint256 _bountyPerMinute) public payable {
-        address newJobAddr =  address(new Job(_longitude, _latitude, _bountyPerMinute, msg.sender, 10));
+        address newJobAddr =  address(new Job(_longitude, _latitude, _bountyPerMinute, msg.sender, feeTo, feeRate));
         allJobs.push(newJobAddr);
         (bool sent, ) = payable(newJobAddr).call{value: msg.value}("");
         value = msg.value;
@@ -35,5 +36,11 @@ contract JobFactory {
     function setFeeToSetter(address _feeToSetter) external {
         require(msg.sender == feeToSetter, "Address is not setter.");
         feeToSetter = _feeToSetter;
+    }
+
+    function setFeeRate(uint256 _feeRate) external {
+        require(msg.sender == feeToSetter, "Address is not setter.");
+        require(_feeRate < 100, "Fee rate greater than 100%.");
+        feeRate = _feeRate;
     }
 }

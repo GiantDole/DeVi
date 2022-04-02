@@ -18,30 +18,34 @@ contract Job {
     uint256 private timeSpent;
     uint256 public radius;
     uint256 public totalBounty;
-    address public factory;
+    address public feeTo;
+    uint256 public feeRate;
+    uint256 public maxFee;
 
 
     constructor(
         uint16 _longitude, 
         uint16 _latitude, 
         uint256 _bountyPerMinute, 
-        address _owner
-        //uint8 _timelimit
+        address _owner,
+        address _feeTo,
+        uint256 _feeRate
         ) {
         gps = GPS(_longitude, _latitude);
         bountyPerMinute = _bountyPerMinute;
         owner = _owner;
+        feeTo = _feeTo;
+        feeRate = _feeRate;
         timestamp = 0;
-        //timelimit = _timelimit;
         timeSpent = 0;
-        factory = msg.sender;
     }
 
     //https://solidity-by-example.org/sending-ether/
     // check if value is greater than bounty per minute
     receive() external payable {
         require(msg.value > bountyPerMinute, "Bounty per minute greater than value deposited.");
-        totalBounty = msg.value;
+        maxFee = msg.value * feeRate / 100;
+        totalBounty = msg.value - maxFee;
         timeLimit = (totalBounty / bountyPerMinute) * 60;
     }
 
@@ -68,19 +72,25 @@ contract Job {
         delete contractor;
     }
 
-    function terminateJob() public {
+    function finishJob() public {
         require(timeSpent == 0 && (msg.sender == owner || msg.sender == contractor));
         timeSpent = block.timestamp - timeLimit;
 
         //send reward to the sender
         uint256 amount = (timeSpent / 60) * bountyPerMinute;
         (bool paidContractor, ) = payable(contractor).call{value: amount}("");
-        require(paidContractor);
+        require(paidContractor, "Payment did not reach contractor");
+
+        //send money to company
+        uint actualFee = (timeSpent / timeLimit) * maxFee;
+        (bool collectedFee, ) = payable(feeTo).call{value: actualFee}("");
+        require(collectedFee, "Fee did not reach company address");
 
         //send remaining money back to requester
         //(bool refundedOwner, ) = payable(owner).call{value: totalBounty - amount}("");
-        (bool refundedOwner, ) = payable(owner).call{value: address(this).balance}("");
-        require(refundedOwner);
+        //(bool refundedOwner, ) = payable(owner).call{value: address(this).balance}("");
+        selfdestruct(payable(owner));
+        //require(refundedOwner, "Refund did not reach owner");
     }
 
     function cancelJob() public {
