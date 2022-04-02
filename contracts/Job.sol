@@ -69,7 +69,7 @@ contract Job {
 
     function terminateJob() public {
         require(timeSpent == 0 && (msg.sender == owner || msg.sender == contractor));
-        timeSpent = block.timestamp - timelimit;
+        timeSpent = block.timestamp - timeLimit;
 
         //send reward to the sender
         uint256 amount = (timeSpent / 60) * bountyPerMinute;
@@ -77,8 +77,16 @@ contract Job {
         require(paidContractor);
 
         //send remaining money back to requester
-        (bool refundedOwner, ) = payable(owner).call{value: totalBounty - amount}("");
+        //(bool refundedOwner, ) = payable(owner).call{value: totalBounty - amount}("");
+        (bool refundedOwner, ) = payable(owner).call{value: address(this).balance}("");
         require(refundedOwner);
+    }
+
+    function cancelJob() public {
+        require(msg.sender == owner, "You must be the job owner to cancel this job");
+        selfdestruct(payable(owner));
+        delete contractor;
+        delete owner;
     }
 
     // function collectReward() public {
