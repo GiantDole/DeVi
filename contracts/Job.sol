@@ -14,7 +14,7 @@ contract Job {
     //address[] private senders;
     address private contractor;
     uint256 timestamp;
-    uint256 public timelimit;
+    uint256 public timeLimit;
     uint256 private timeSpent;
     uint256 public radius;
 
@@ -25,13 +25,14 @@ contract Job {
         uint16 _longitude, 
         uint16 _latitude, 
         uint256 _bountyPerMinute, 
-        address _owner, 
-        uint8 _timelimit) {
+        address _owner
+        //uint8 _timelimit
+        ) {
         gps = GPS(_longitude, _latitude);
         bountyPerMinute = _bountyPerMinute;
         owner = _owner;
         timestamp = 0;
-        timelimit = _timelimit;
+        //timelimit = _timelimit;
         timeSpent = 0;
     }
 
@@ -40,6 +41,7 @@ contract Job {
     receive() external payable {
         require(msg.value > bountyPerMinute, "Bounty per minute greater than value deposited.");
         totalBounty = msg.value;
+        timeLimit = (totalBounty / bountyPerMinute) * 60;
     }
 
     // worker submits a proposal to owner
