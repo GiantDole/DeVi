@@ -9,7 +9,7 @@ contract Job {
     }
 
     GPS gps;
-    uint8 public bountyPerMinute;
+    uint256 public bountyPerMinute;
     address private owner;
     //address[] private senders;
     address private contractor;
@@ -24,7 +24,7 @@ contract Job {
     constructor(
         uint16 _longitude, 
         uint16 _latitude, 
-        uint8 _bounty, 
+        uint256 _bounty, 
         address _owner, 
         uint8 _timelimit) {
         gps = GPS(_longitude, _latitude);
