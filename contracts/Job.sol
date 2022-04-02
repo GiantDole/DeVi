@@ -68,24 +68,17 @@ contract Job {
     }
 
     function terminateJob() public {
+        require(timeSpent == 0 && (msg.sender == owner || msg.sender == contractor));
+        timeSpent = block.timestamp - timelimit;
 
-    }
+        //send reward to the sender
+        uint256 amount = (timeSpent / 60) * bountyPerMinute;
+        (bool paidContractor, ) = payable(contractor).call{value: amount}("");
+        require(paidContractor);
 
-    // function terminateJob() public {
-    //     require(timeSpent == 0 && (msg.sender == owner || msg.sender == sender));
-    //     timeSpent = block.timestamp - timelimit;
-
-    //     //send reward to the sender
-    //     uint amount = (timeSpent / 60) * bountyPerMinute;
-    //     payable(sender).send(amount);
-
-    //     //send remaining money back to requester
-    //     payable(owner).send(address(this).balance);
-    // }
-
-    function sendmoney(address payable _to) public payable {
-        bool sent = _to.send(10); 
-        require(sent, "Failed to send eth");
+        //send remaining money back to requester
+        (bool refundedOwner, ) = payable(owner).call{value: totalBounty - amount}("");
+        require(refundedOwner);
     }
 
     // function collectReward() public {
