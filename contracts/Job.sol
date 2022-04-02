@@ -1,22 +1,23 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.6;
 
+import "./libraries/Math.sol";
+
 contract Job {
 
     struct GPS {
-        uint16 longitude;
-        uint16 latitude;
+        int256 longitude;
+        int256 latitude;
     }
 
     GPS gps;
+    uint256 public radius;
     uint256 public bountyPerMinute;
     address private owner;
-    //address[] private senders;
     address private contractor;
     uint256 timestamp;
     uint256 public timeLimit;
     uint256 private timeSpent;
-    uint256 public radius;
     uint256 public totalBounty;
     address public feeTo;
     uint256 public feeRate;
@@ -24,14 +25,16 @@ contract Job {
 
 
     constructor(
-        uint16 _longitude, 
-        uint16 _latitude, 
+        int256 _longitude, 
+        int256 _latitude, 
+        uint256 _radius, 
         uint256 _bountyPerMinute, 
         address _owner,
         address _feeTo,
         uint256 _feeRate
         ) {
         gps = GPS(_longitude, _latitude);
+        radius = _radius;
         bountyPerMinute = _bountyPerMinute;
         owner = _owner;
         feeTo = _feeTo;
@@ -52,9 +55,15 @@ contract Job {
     // worker submits a proposal to owner
     // need to check that the worker's blockchain address is valid
     // need to check that the worker's geolocation is within a certain radius
-    function contractorAcceptJob() public{
+    function contractorAcceptJob(int256 _long, int _lat) public {
         //Sender accepting Job
         require(contractor == address(0));
+        require(_lat > -9000000 && _lat < 9000000, "Latitude not in bounded range");
+        require(_long > -18000000 && _long < 18000000, "Longitude not in bounded range");
+        uint256 d = Math.sqrt(uint(((_long - gps.longitude) ** 2) + ((_lat - gps.latitude) ** 2)));
+        // 111138 meters per lat/long
+        uint256 d_meters = d * 111139 / 10000;
+        require(d_meters <= radius, "Geolocation outside of desired location");
         contractor = payable(msg.sender);
     }
 
