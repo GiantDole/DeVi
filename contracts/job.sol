@@ -12,7 +12,7 @@ contract Job {
     uint8 public bountyPerMinute;
     address private owner;
     //address[] private senders;
-    address private sender;
+    address private contractor;
     uint256 timestamp;
     uint256 public timelimit;
     uint256 private timeSpent;
@@ -36,28 +36,31 @@ contract Job {
     //https://solidity-by-example.org/sending-ether/
     receive() external payable{}
 
-
     // worker submits a proposal to owner
     // need to check that the worker's blockchain address is valid
     // need to check that the worker's geolocation is within a certain radius
-    function acceptJob() public{
+    function contractorAcceptJob() public{
         //Sender accepting Job
-        require(sender == address(0));
-        sender = payable(msg.sender);
+        require(contractor == address(0));
+        contractor = payable(msg.sender);
     }
 
     // owner accepts sender's proposal
     // start timer
-    function acceptSender() public {
+    function ownerAcceptContractor() public {
         //Requester accepting request
-        require(msg.sender == owner && sender != address(0));
+        require(msg.sender == owner && contractor != address(0));
         timestamp = block.timestamp;
     }
 
-    function denyRequest() public {
+    function ownerRejectConctractor() public {
         //time elapsed or denied
         require(msg.sender == owner && timestamp == 0);
-        delete sender;
+        delete contractor;
+    }
+
+    function terminateJob() public {
+        
     }
 
     // function terminateJob() public {
