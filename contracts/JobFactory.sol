@@ -33,7 +33,7 @@ contract JobFactory {
         return contractorHistory[_contractor];
     }
 
-    function getAverageContractorRating(address _contractor) external view returns(uint8) {
+    function getAverageContractorRating(address _contractor) external view returns(uint32) {
         Job[] memory jobs = contractorHistory[_contractor];
         uint totalRating = 0;
         uint totalJobs = 0;
@@ -49,7 +49,7 @@ contract JobFactory {
         if(totalRating == 0) {
             return 0;
         }
-        return uint8((totalRating * 100) / totalJobs);
+        return uint32((totalRating * 100) / totalJobs);
     }
 
     function addNewContractorJob(Job _job) public {
