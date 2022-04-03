@@ -60,7 +60,7 @@ contract Job {
         require(msg.value > bountyPerMinute, "Bounty per minute greater than value deposited.");
         maxFee = (msg.value * feeRate) / 100;
         totalBounty = msg.value - maxFee;
-        timeLimit = (totalBounty / bountyPerMinute) * 60;
+        timeLimit = totalBounty / bountyPerMinute;
     }
 
     // worker submits a proposal to owner
