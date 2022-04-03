@@ -23,6 +23,7 @@ contract Job {
     uint256 public feeRate;
     uint256 public maxFee;
     bool started;
+    bool finished;
 
     event ContractorAcceptedJob(uint256 distanceFromPin);
 
@@ -52,6 +53,7 @@ contract Job {
         startTime = 0;
         timeSpent = 0;
         started = false;
+        finished = false;
     }
 
     //https://solidity-by-example.org/sending-ether/
@@ -122,7 +124,14 @@ contract Job {
         emit JobFinished(amount, actualFee, address(this).balance);
 
         //send remaining money back to requester
-        selfdestruct(payable(owner));
+        (bool refundedOwner, ) = payable(owner).call{value: address(this).balance}("");
+        require(refundedOwner, "Could not refund remaining balance to owner");
+        //selfdestruct(payable(owner));
+        finished = true;
+    }
+
+    function isJobCompleted() public view returns(bool) {
+        return finished;
     }
 
     function cancelJob() public {

@@ -10,6 +10,8 @@ contract JobFactory {
     uint256 public feeRate;
     address[] public allJobs;
 
+    //mapping(address => Job[]) contractorHistory;
+
     event JobCreated(address job);
 
     constructor(address _feeToSetter) {
