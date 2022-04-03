@@ -44,4 +44,5 @@ Furthermore, we want to incorporate a Proof of Location protocol such that the l
 
 ## Additional Links and Resources
 Figma: https://www.figma.com/proto/gmseIlqyS4zrnWVAzNPRhd/Project-3?node-id=67%3A834&scaling=scale-down&page-id=0%3A1&starting-point-node-id=67%3A834
+
 YouTube: https://youtu.be/U3XrE_i0dkw
