@@ -2,6 +2,7 @@
 pragma solidity ^0.8.6;
 
 import "./libraries/Math.sol";
+import "./JobFactory.sol";
 
 contract Job {
 
@@ -25,6 +26,9 @@ contract Job {
     bool started;
     bool finished;
 
+    JobFactory private factory;
+    uint8 public contractorRating;
+
     event ContractorAcceptedJob(uint256 distanceFromPin);
 
     event OwnerAcceptedContractor();
@@ -35,6 +39,8 @@ contract Job {
 
     event JobFinished(uint256 paidToContractor, uint256 earned, uint256 refundedToOwner);
 
+    event JobRated(uint8 rating, address contractor);
+
     constructor(
         int256 _longitude, 
         int256 _latitude, 
@@ -42,7 +48,8 @@ contract Job {
         uint256 _bountyPerMinute, 
         address _owner,
         address _feeTo,
-        uint256 _feeRate
+        uint256 _feeRate,
+        JobFactory _factory
         ) {
         gps = GPS(_longitude, _latitude);
         radius = _radius;
@@ -54,6 +61,7 @@ contract Job {
         timeSpent = 0;
         started = false;
         finished = false;
+        factory = _factory;
     }
 
     //https://solidity-by-example.org/sending-ether/
@@ -128,6 +136,18 @@ contract Job {
         require(refundedOwner, "Could not refund remaining balance to owner");
         //selfdestruct(payable(owner));
         finished = true;
+        factory.addNewContractorJob(this);
+    }
+
+    function rateContractor(uint8 _rating) public {
+        require(msg.sender == owner, "Only the owner can rate!");
+        require(contractorRating == 0, "A rating was submitted already");
+        require(finished == true, "The job is not done yet");
+        require(_rating > 0 && _rating < 6, "The rating is not in the allowed range!");
+
+        contractorRating = _rating;
+
+        emit JobRated(contractorRating, contractor);
     }
 
     function isJobCompleted() public view returns(bool) {
