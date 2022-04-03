@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.6;
 
-//import "./libraries/Math.sol";
+import "./libraries/Math.sol";
 
 contract Job {
 
@@ -68,20 +68,12 @@ contract Job {
     // need to check that the worker's geolocation is within a certain radius
     function contractorAcceptJob(int256 _long, int256 _lat) public {
         //Sender accepting Job
-<<<<<<< HEAD
         require(started == false, "Job has started");
         require(contractor == address(0), "Contract has already been accepted by another contractor");
         require(msg.sender != owner, "Contractor cannot be owner");
         require(_lat >= -9000000 && _lat <= 9000000, "Latitude not in bounded range");
         require(_long >= -18000000 && _long <= 18000000, "Longitude not in bounded range");
         uint256 d = Math.sqrt(uint(((_long - gps.longitude) ** 2) + ((_lat - gps.latitude) ** 2)));
-=======
-        require(contractor == address(0));
-        require(_lat > -9000000 && _lat < 9000000, "Latitude not in bounded range");
-        require(_long > -18000000 && _long < 18000000, "Longitude not in bounded range");
-        //uint256 d = Math.sqrt(uint(((_long - gps.longitude) ** 2) + ((_lat - gps.latitude) ** 2)));
-        uint256 d = uint(((_long - gps.longitude) ** 2) + ((_lat - gps.latitude) ** 2));
->>>>>>> 86dbd34d1772d0e32bb85b6402e1132635a75779
         // 111138 meters per lat/long
         uint256 d_meters = d * 111139 / 100000;
         require(d_meters <= radius, "Geolocation outside of desired location");
