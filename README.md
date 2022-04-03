@@ -41,3 +41,7 @@ Furthermore, such a small interdisciplinary team of back-end developers, front-e
 
 Deployment of an MVP and collaboration with youtube based journalists from international news outlets. The DApp, once deployed and refined, can be used for a host of other use cases, such as remote apartment hunting, scoping out locations before deciding what bar or club to go to on a night out, adult entertainment and more. 
 Furthermore, we want to incorporate a Proof of Location protocol such that the location and time of the contractor can be verified. This would allow for non-live video transmission with verified constraints beforehand.
+
+## Additional Links and Resources
+Figma: https://www.figma.com/proto/gmseIlqyS4zrnWVAzNPRhd/Project-3?node-id=67%3A834&scaling=scale-down&page-id=0%3A1&starting-point-node-id=67%3A834
+YouTube: https://youtu.be/U3XrE_i0dkw
