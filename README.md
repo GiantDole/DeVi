@@ -1,6 +1,8 @@
 # Spectacle
 _Enabling borderless and transparent journalism_
 
+A project created at the LionHack blockchain hackathon by Blockchain@Columbia.
+
 ## Inspiration
 
 In an ad revenue-driven business such as journalism, it is crucial to report on events before competitors do. Traditionally, media companies rely on a global network of correspondents and dispatch personnel as soon as a newsworthy event occurs. There are significant costs and often long deployment times involved with this approach which we seek to eliminate through our solution. Media companies often have to rely on social media content, which is regularly unverified and biased, while they dispatch their correspondents. Spectacle is a tool that allows journalists to capture and interactively guide video content remotely. 
