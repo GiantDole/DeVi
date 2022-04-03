@@ -8,10 +8,7 @@ contract JobFactory {
     address public feeTo;
     address public feeToSetter;
     uint256 public feeRate;
-
     address[] public allJobs;
-    uint256 public value;
-
 
     event JobCreated(address job);
 
@@ -26,7 +23,6 @@ contract JobFactory {
         address newJobAddr =  address(new Job(_longitude, _latitude, radius, _bountyPerMinute, msg.sender, feeTo, feeRate));
         allJobs.push(newJobAddr);
         (bool sent, ) = payable(newJobAddr).call{value: msg.value}("");
-        value = msg.value;
         require(sent, "Eth not sent to new job");
         emit JobCreated(newJobAddr);
     }
